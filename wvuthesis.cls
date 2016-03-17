@@ -6,19 +6,26 @@
 %
 %%% Document Options:
 % The following options are available
-%   10-12pt -  specifies the font size for the document
+%   10*-12pt -  specifies the font size for the document
+%   single - use single spacing in the document
+%   onehalf* - use 1.5 spacing in the document
+%   double - use double spacing in the document
+%           Note that double in latex is not the same as 
+%           double in Word.  It is betterldots
+%   times - use times new roman as the document font
+%   arial* - use arial as the document font
+%   colorlinks* - use colored text for links
+%   highlightlinks - use boxes for links
 %
 % %%%%%%% The following two options may not work. %%%%%%%%%%
 % I haven't tested the following two.  They may be broken by
 % use of the geometry package.
 %   twoside - specifies that the document is to be generated 
 %             for printing on both sides of the page
-%   oneside - specifies that the document is to be generated
+%   oneside* - specifies that the document is to be generated
 %             for printing on one side of the page
 %
-% %%%%%%%%%%%% Back to working options %%%%%%%%%%%%%%%%%%%%
-%   times - use times new roman as the document font
-%   arial - use arial as the document font
+% * options marked with an astericks are default
 %   
 
 %%% Parameters to initialize for frontmatter page:
@@ -30,7 +37,7 @@
 % 	\department{Mechanincal and Aerospace Engineering}  %The name of the department conferring the degree
 % 	\degreetype{Master of Science}  %The type of degree (MS or Ph.D. spelled out)
 %   \degreediscipline{Aerospace Engineering}  %The discipline you are receiveing the degree in 
-%   \year{2016}  %The year of the document
+%   \dateyear{2016}  %The year of the document
 %   \keywords{Covariance, Eigenvalues, Eigenvectors, Parameter Estimation}  %Keywords pertaining to the information in the document
 % 	\copyrightholder{Andrew J. Liounis}  %Usually this is just your name unless you are giving copyright permission to the university
 % 	\chair{John A. Christian}{Ph.D.}  %The chair of your defense board.  Usually your advisor.  Note their degree level
@@ -86,8 +93,9 @@
 %   \end{nomenclature}
 %
 %% This concludes the environments defined in this class. To input
-%% A TOC, LOF, or LOT use the standard LaTeX commands as these have not 
-%% been editted.  For the rest of the setup see the example .tex document
+%% A TOC, LOF, or LOT use the standard LaTeX commands. I have 
+%% editted them so they do what they should
+%% For the rest of the setup see the example .tex document
 %% that is included.
 %
 % WVU version
@@ -148,13 +156,28 @@
 \DeclareOption{arial}{
     \def\@fontseries{uarial}
 }
-%% Fallback
+%Hyperlink options
+\DeclareOption{colorlinks}{
+    %setup the hyperlinks to look nice
+    \PassOptionsToPackage{
+        colorlinks,
+        linkcolor={red!50!black},
+        citecolor={blue!50!black},
+        urlcolor={blue!80!black}
+    }{hyperref}
+}
+\DeclareOption{highlightlinks}{
+    %Do nothing since this is the default for hyperref
+}
+    
+%% Fallback -- pass everything else to report
 \DeclareOption*{
-    \ClassWarning{wvuthesis}{Unknown option '\CurrentOption'}
+    %\ClassWarning{wvuthesis}{Unknown option '\CurrentOption'}
+    \PassOptionsToClass{\CurrentOption}{report}
 }
 
 %% Create Default Options
-\ExecuteOptions{10pt,oneside,onehalf,arial}
+\ExecuteOptions{10pt,oneside,onehalf,arial,colorlinks}
 
 %% Process given options and end options stage of class
 \ProcessOptions\relax
@@ -172,6 +195,10 @@
 \RequirePackage{ragged2e}
 % use to provide advanced options for tabular
 \RequirePackage{array}
+%Use to adjust hyperlinking
+\RequirePackage{hyperref}
+%Use to get colors for hyperref
+\RequirePackage{xcolor}
 
 
 %%%%%%%  Set up margins and formatting params %%%
@@ -207,8 +234,8 @@
 \def\degreediscipline#1{\gdef\@degreediscipline{#1}}
 \def\@degreedicipline{}
 
-\def\year#1{\gdef\@year{#1}}
-\def\@year{}
+\def\dateyear#1{\gdef\@dateyear{#1}}
+\def\@dateyear{}
 
 \def\keywords#1{\gdef\@keywords{#1}}
 \def\@keywords{}
@@ -269,11 +296,11 @@
             {Department of }\@department \\%
             \vfill
             Morgantown, West Viriginia \\%
-            \@year \\%
+            \@dateyear \\%
             \vfill
             {Keywords: \@keywords \\%
             [\bigskipamount] }
-            Copyright \copyright \, \@year \copyrightholder \\%
+            Copyright \copyright \, \@dateyear \copyrightholder \\%
             \vfill
             \normalfont
         \end{center}
@@ -284,6 +311,7 @@
 \newenvironment{abstractpage}
  {%
   \clearpage
+  \addcontentsline{toc}{chapter}{\abstractname}
   \pagestyle{empty}
   \begin{center}
   %set the default font style to bold face for the abstract page
@@ -310,6 +338,7 @@
      \clearpage
      \vspace*{\stretch{2}}
      \centering{\section*{Acknowledgements}}
+     \addcontentsline{toc}{chapter}{Acknowledgements}
      \justify
  }
  {% 
@@ -335,6 +364,7 @@
  {%
      \pagestyle{plain}
      \section*{Acronyms}
+     \addcontentsline{toc}{chapter}{Acronyms}
      \begin{tabular}{b{0.15\textwidth} b{0.85\textwidth}}
  }
  {%
@@ -345,6 +375,7 @@
  {%
      \pagestyle{plain}
      \section*{Nomenclature}
+     \addcontentsline{toc}{chapter}{Nomenclature}
      \begin{tabular}{c c b{0.85\textwidth}}
          Symbol & Units & Description \\
  }
@@ -352,6 +383,78 @@
      \end{tabular}
  }
 
+% update the chapter command so that it sets up the proper numbering the first time it is called
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+    \refstepcounter{chapter}%
+    \typeout{\@chapapp\space\thechapter.}%
+    \addcontentsline{toc}{chapter}%
+        {\protect\numberline{\thechapter}#1}%
+    \else
+      \addcontentsline{toc}{chapter}{#1}%
+    \fi
+    \chaptermark{#1}%
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \if@twocolumn
+      \@topnewpage[\@makechapterhead{#2}]%
+    \else
+      \@makechapterhead{#2}%
+      \@afterheading
+    \fi
+    \ifnum\value{chapter}=1
+        \pagenumbering{arabic}
+        \pagestyle{plain}
+    \fi}
 
+%Make the table of contents links in black
+\renewcommand\tableofcontents{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\contentsname
+        \@mkboth{%
+           \MakeUppercase\contentsname}{\MakeUppercase\contentsname}
+       }%
+        {%
+            \hypersetup{hidelinks}%
+            \@starttoc{toc}%
+        }%
+        \if@restonecol\twocolumn\fi
+    }
+\renewcommand\listoffigures{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\listfigurename}%
+    \addcontentsline{toc}{chapter}{\listfigurename}%
+      \@mkboth{\MakeUppercase\listfigurename}%
+              {\MakeUppercase\listfigurename}%
+    {%
+        \hypersetup{hidelinks}%
+        \@starttoc{lof}%
+    }%
+    \if@restonecol\twocolumn\fi
+}
 
+\renewcommand\listoftables{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\listtablename}%
+    \addcontentsline{toc}{chapter}{\listtablename}%
+      \@mkboth{%
+          \MakeUppercase\listtablename}%
+         {\MakeUppercase\listtablename}%
+    {%
+        \hypersetup{hidelinks}%
+        \@starttoc{lot}%
+    }%
+    \if@restonecol\twocolumn\fi
+}
 
