@@ -6,26 +6,19 @@
 %
 %%% Document Options:
 % The following options are available
-%   10*-12pt -  specifies the font size for the document
-%   single - use single spacing in the document
-%   onehalf* - use 1.5 spacing in the document
-%   double - use double spacing in the document
-%           Note that double in latex is not the same as 
-%           double in Word.  It is betterldots
-%   times - use times new roman as the document font
-%   arial* - use arial as the document font
-%   colorlinks* - use colored text for links
-%   highlightlinks - use boxes for links
+%   10-12pt -  specifies the font size for the document
 %
 % %%%%%%% The following two options may not work. %%%%%%%%%%
 % I haven't tested the following two.  They may be broken by
 % use of the geometry package.
 %   twoside - specifies that the document is to be generated 
 %             for printing on both sides of the page
-%   oneside* - specifies that the document is to be generated
+%   oneside - specifies that the document is to be generated
 %             for printing on one side of the page
 %
-% * options marked with an astericks are default
+% %%%%%%%%%%%% Back to working options %%%%%%%%%%%%%%%%%%%%
+%   times - use times new roman as the document font
+%   arial - use arial as the document font
 %   
 
 %%% Parameters to initialize for frontmatter page:
@@ -93,9 +86,8 @@
 %   \end{nomenclature}
 %
 %% This concludes the environments defined in this class. To input
-%% A TOC, LOF, or LOT use the standard LaTeX commands. I have 
-%% editted them so they do what they should
-%% For the rest of the setup see the example .tex document
+%% A TOC, LOF, or LOT use the standard LaTeX commands as these have not 
+%% been editted.  For the rest of the setup see the example .tex document
 %% that is included.
 %
 % WVU version
@@ -218,7 +210,7 @@
 
 % \title and \author already exist
 
-%create variable to store submisstion type (Thesis or Dissertation
+%create variable to store submission type (Thesis or Dissertation
 \def\submissiontype#1{\gdef\@submissiontype{#1}}
 \def\@submissiontype{}
 
@@ -249,7 +241,7 @@
 % We need to allow for multiple calls to committee
 % Therefore start building the committee section of the title page
 
-\newcommand\committeemembers{}% This willl store committee members
+\newcommand\committeemembers{}% This will store committee members
 \newcommand\committee[2]{% Add another committee member to the list
   \g@addto@macro\committeemembers{\nextcommitteemember #1, #2}%
 }
@@ -295,7 +287,7 @@
              [\medskipamount]}
             {Department of }\@department \\%
             \vfill
-            Morgantown, West Viriginia \\%
+            Morgantown, West Virginia \\%
             \@dateyear \\%
             \vfill
             {Keywords: \@keywords \\%
@@ -337,8 +329,8 @@
  {%
      \clearpage
      \vspace*{\stretch{2}}
-     \centering{\section*{Acknowledgements}}
-     \addcontentsline{toc}{chapter}{Acknowledgements}
+     \centering{\section*{Acknowledgments}}
+     \addcontentsline{toc}{chapter}{Acknowledgments}
      \justify
  }
  {% 
@@ -364,7 +356,6 @@
  {%
      \pagestyle{plain}
      \section*{Acronyms}
-     \addcontentsline{toc}{chapter}{Acronyms}
      \begin{tabular}{b{0.15\textwidth} b{0.85\textwidth}}
  }
  {%
@@ -375,7 +366,6 @@
  {%
      \pagestyle{plain}
      \section*{Nomenclature}
-     \addcontentsline{toc}{chapter}{Nomenclature}
      \begin{tabular}{c c b{0.85\textwidth}}
          Symbol & Units & Description \\
  }
