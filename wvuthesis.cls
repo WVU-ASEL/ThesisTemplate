@@ -328,9 +328,9 @@
  \newenvironment{acknowledgements}
  {%
      \clearpage
-     \vspace*{\stretch{2}}
      \centering{\section*{Acknowledgments}}
      \addcontentsline{toc}{chapter}{Acknowledgments}
+     \vspace{\stretch{2}}
      \justify
  }
  {% 
