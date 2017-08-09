@@ -278,13 +278,13 @@
             \@collegename \\%
             {at West Virginia University \\%
              [\medskipamount]}
-            {in partial fullfillment of the requirements for the degree of \\%
+            {in partial fulfillment of the requirements for the degree of \\%
              [\medskipamount]}
             {\@degreetype \\ %
             in \\ %
             \@degreediscipline}
             \vfill
-            \@chairname, \@chairdegree, Commitee Chairperson\\%
+            \@chairname, \@chairdegree, Committee Chairperson\\%
             {\printcommittee\\%
              [\medskipamount]}
             \@department \\%
