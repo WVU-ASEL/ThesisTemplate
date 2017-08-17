@@ -269,30 +269,32 @@
             \vfill
             \huge \expandafter\MakeUppercase\expandafter{\@title}\\
             \vspace{15 mm}
+			\Large by\\%
+			\vspace{7.5 mm}
             \Large \@author\\%
             \vspace{15 mm}
             \normalsize
-            Thesis submitted to the\\%
+            \@submissiontype\ submitted to the\\%
             \@collegename \\%
             {at West Virginia University \\%
              [\medskipamount]}
-            {in partial fullfillment of the requirements for the degree of \\%
+            {in partial fulfillment of the requirements for the degree of \\%
              [\medskipamount]}
             {\@degreetype \\ %
             in \\ %
             \@degreediscipline}
             \vfill
-            \@chairname, Chair \@chairdegree\\%
+            \@chairname, \@chairdegree, Committee Chairperson\\%
             {\printcommittee\\%
              [\medskipamount]}
-            {Department of }\@department \\%
+            \@department \\%
             \vfill
             Morgantown, West Virginia \\%
             \@dateyear \\%
             \vfill
             {Keywords: \@keywords \\%
             [\bigskipamount] }
-            Copyright \copyright \, \@dateyear \copyrightholder \\%
+            Copyright \copyright \, \@dateyear\ \@copyrightholder \\%
             \vfill
             \normalfont
         \end{center}
@@ -312,7 +314,7 @@
   [\bigskipamount]}
   {\large \@title\\%
   [\bigskipamount]}
-  \@author
+  by \@author
   \end{center}
   \begin{singlespace}
       \begin{justify}
